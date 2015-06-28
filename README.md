@@ -25,7 +25,7 @@ Let's try scraping headlines from the front page of Reddit.
                     .ChildNodes.Last(node => node.Class() == "spacer")
                     .ChildNodes.WithId("siteTable");
                 
-                var posts = table.SortChildren(child => child.Class().StartsWith("thing"));
+                var posts = table.SortChildren(child => child.Class().Contains("thing"));
                 
                 foreach (var post in posts)
                 {
@@ -58,24 +58,24 @@ Let's try scraping headlines from the front page of Reddit.
                     .DocumentNode
                     .Element("html")
                     .Element("body")
-                    .ChildNodes.Where(node => node.Attributes["class"]?.Value == "content")
+                    .ChildNodes.First(node => node.Attributes["class"]?.Value == "content")
                     .ChildNodes.Last(node => node.Attributes["class"]?.Value == "spacer")
-                    .ChildNodes.Where(node => node.Id == "siteTable");
+                    .ChildNodes.First(node => node.Id == "siteTable");
                 
                 var posts = table.ChildNodes.Where(child =>
                 {
-                    string class = child.Attributes["class"]?.Value;
+                    string @class = child.Attributes["class"]?.Value;
                     
-                    if (class == null)
+                    if (@class == null)
                         return false;
                     
-                    return class.StartsWith("thing"));
+                    return @class.Contains("thing");
                 });
                 
                 foreach (var post in posts)
                 {
                     string title = post
-                        .ChildNodes.Where(node => node.Attributes["class"]?.Value == "entry unvoted")
+                        .ChildNodes.First(node => node.Attributes["class"]?.Value == "entry unvoted")
                         .Element("p")
                         .Element("a")
                         .InnerText;
