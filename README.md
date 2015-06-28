@@ -64,12 +64,12 @@ Let's try scraping headlines from the front page of Reddit.
                 
                 var posts = table.ChildNodes.Where(child =>
                 {
-                    string class = child.Attributes["class"]?.Value;
+                    string @class = child.Attributes["class"]?.Value;
                     
-                    if (class == null)
+                    if (@class == null)
                         return false;
                     
-                    return class.StartsWith("thing"));
+                    return @class.StartsWith("thing"));
                 });
                 
                 foreach (var post in posts)
