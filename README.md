@@ -58,9 +58,9 @@ Let's try scraping headlines from the front page of Reddit.
                     .DocumentNode
                     .Element("html")
                     .Element("body")
-                    .ChildNodes.Where(node => node.Attributes["class"]?.Value == "content")
+                    .ChildNodes.First(node => node.Attributes["class"]?.Value == "content")
                     .ChildNodes.Last(node => node.Attributes["class"]?.Value == "spacer")
-                    .ChildNodes.Where(node => node.Id == "siteTable");
+                    .ChildNodes.First(node => node.Id == "siteTable");
                 
                 var posts = table.ChildNodes.Where(child =>
                 {
