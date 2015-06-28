@@ -1,0 +1,6 @@
+C:\Users\James\visuals\Hext\Hext\bin\Release\Hext.dll
+C:\Users\James\visuals\Hext\Hext\bin\Release\Hext.pdb
+C:\Users\James\visuals\Hext\Hext\bin\Release\HtmlAgilityPack.dll
+C:\Users\James\visuals\Hext\Hext\obj\Release\Hext.csprojResolveAssemblyReference.cache
+C:\Users\James\visuals\Hext\Hext\obj\Release\Hext.dll
+C:\Users\James\visuals\Hext\Hext\obj\Release\Hext.pdb
