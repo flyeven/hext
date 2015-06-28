@@ -140,19 +140,19 @@ namespace Hext
             return node.OwnerDocument.DocumentNode;
         }
 
-        public static HtmlNode Html(this HtmlNode node)
+        public static HtmlNode DocumentHtml(this HtmlNode node)
         {
-            return node.DocumentNode().Element("html");
+            return node.OwnerDocument.Html();
         }
 
-        public static HtmlNode Head(this HtmlNode node)
+        public static HtmlNode DocumentHead(this HtmlNode node)
         {
-            return node.Html().Element("head");
+            return node.OwnerDocument.Head();
         }
 
-        public static HtmlNode Body(this HtmlNode node)
+        public static HtmlNode DocumentBody(this HtmlNode node)
         {
-            return node.Html().Element("body");
+            return node.OwnerDocument.Body();
         }
 
         public static bool IsEmpty(this HtmlNode node)
