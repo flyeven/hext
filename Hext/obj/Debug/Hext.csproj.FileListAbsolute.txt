@@ -1,0 +1,12 @@
+C:\Users\James\dotnet\hext\Hext\bin\Debug\Hext.dll
+C:\Users\James\dotnet\hext\Hext\bin\Debug\Hext.pdb
+C:\Users\James\dotnet\hext\Hext\bin\Debug\HtmlAgilityPack.dll
+C:\Users\James\dotnet\hext\Hext\bin\Debug\nunit.core.dll
+C:\Users\James\dotnet\hext\Hext\bin\Debug\nunit.core.interfaces.dll
+C:\Users\James\dotnet\hext\Hext\bin\Debug\nunit.framework.dll
+C:\Users\James\dotnet\hext\Hext\bin\Debug\nunit.util.dll
+C:\Users\James\dotnet\hext\Hext\bin\Debug\NUnit.VisualStudio.TestAdapter.dll
+C:\Users\James\dotnet\hext\Hext\bin\Debug\nunit.framework.xml
+C:\Users\James\dotnet\hext\Hext\obj\Debug\Hext.csprojResolveAssemblyReference.cache
+C:\Users\James\dotnet\hext\Hext\obj\Debug\Hext.dll
+C:\Users\James\dotnet\hext\Hext\obj\Debug\Hext.pdb
