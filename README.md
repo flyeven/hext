@@ -25,7 +25,7 @@ Let's try scraping headlines from the front page of Reddit.
                     .ChildNodes.Last(node => node.Class() == "spacer")
                     .ChildNodes.WithId("siteTable");
                 
-                var posts = table.SortChildren(child => child.Class().StartsWith("thing"));
+                var posts = table.SortChildren(child => child.Class().Contains("thing"));
                 
                 foreach (var post in posts)
                 {
@@ -69,7 +69,7 @@ Let's try scraping headlines from the front page of Reddit.
                     if (@class == null)
                         return false;
                     
-                    return @class.StartsWith("thing");
+                    return @class.Contains("thing");
                 });
                 
                 foreach (var post in posts)
