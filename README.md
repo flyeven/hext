@@ -69,13 +69,13 @@ Let's try scraping headlines from the front page of Reddit.
                     if (@class == null)
                         return false;
                     
-                    return @class.StartsWith("thing"));
+                    return @class.StartsWith("thing");
                 });
                 
                 foreach (var post in posts)
                 {
                     string title = post
-                        .ChildNodes.Where(node => node.Attributes["class"]?.Value == "entry unvoted")
+                        .ChildNodes.First(node => node.Attributes["class"]?.Value == "entry unvoted")
                         .Element("p")
                         .Element("a")
                         .InnerText;
