@@ -8,81 +8,72 @@ Let's try scraping headlines from the front page of Reddit.
 
 ### With Hext
 
-    public IEnumerable<string> TopRedditHeadlines
+    public IEnumerable<string> RedditHeadLines()
     {
-        get
+        string html;
+        using (var client = new WebClient())
+            html = client.DownloadString("http://reddit.com");
+        
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        
+        var table = doc.Body()
+            .ChildNodes.WithClass("content")
+            .ChildNodes.Last(node => node.Class() == "spacer")
+            .ChildNodes.WithId("siteTable");
+        
+        var posts = table.SortChildren(child => child.Class().Contains("thing"));
+        
+        foreach (var post in posts)
         {
-            using (var client = new WebClient())
-            {
-                string html = client.DownloadString("http://reddit.com");
+            string title = post
+                .ChildNodes.WithClass("entry unvoted")
+                .Element("p")
+                .Element("a")
+                .InnerText;
             
-                var doc = new HtmlDocument();
-                doc.LoadHtml(html);
-                
-                var table = doc
-                    .Body()
-                    .ChildNodes.WithClass("content")
-                    .ChildNodes.Last(node => node.Class() == "spacer")
-                    .ChildNodes.WithId("siteTable");
-                
-                var posts = table.SortChildren(child => child.Class().Contains("thing"));
-                
-                foreach (var post in posts)
-                {
-                    string title = post
-                        .ChildNodes.WithClass("entry unvoted")
-                        .Element("p")
-                        .Element("a")
-                        .InnerText;
-                    
-                    yield return title;
-                }
-            }
+            yield return title;
         }
     }
 
 ### Without Hext
 
-    public IEnumerable<string> TopRedditHeadlines
+    public IEnumerable<string> RedditHeadLines()
     {
-        get
+        string html;
+        using (var client = new WebClient())
+            client.DownloadString("http://reddit.com");
+    
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        
+        var table = doc
+            .DocumentNode
+            .Element("html")
+            .Element("body")
+            .ChildNodes.First(node => node.Attributes["class"]?.Value == "content")
+            .ChildNodes.Last(node => node.Attributes["class"]?.Value == "spacer")
+            .ChildNodes.First(node => node.Id == "siteTable");
+        
+        var posts = table.ChildNodes.Where(child =>
         {
-            using (var client = new WebClient())
-            {
-                string html = client.DownloadString("http://reddit.com");
+            string @class = child.Attributes["class"]?.Value;
             
-                var doc = new HtmlDocument();
-                doc.LoadHtml(html);
-                
-                var table = doc
-                    .DocumentNode
-                    .Element("html")
-                    .Element("body")
-                    .ChildNodes.First(node => node.Attributes["class"]?.Value == "content")
-                    .ChildNodes.Last(node => node.Attributes["class"]?.Value == "spacer")
-                    .ChildNodes.First(node => node.Id == "siteTable");
-                
-                var posts = table.ChildNodes.Where(child =>
-                {
-                    string @class = child.Attributes["class"]?.Value;
-                    
-                    if (@class == null)
-                        return false;
-                    
-                    return @class.Contains("thing");
-                });
-                
-                foreach (var post in posts)
-                {
-                    string title = post
-                        .ChildNodes.First(node => node.Attributes["class"]?.Value == "entry unvoted")
-                        .Element("p")
-                        .Element("a")
-                        .InnerText;
-                    
-                    yield return title;
-                }
-            }
+            if (@class == null)
+                return false;
+            
+            return @class.Contains("thing");
+        });
+        
+        foreach (var post in posts)
+        {
+            string title = post
+                .ChildNodes.First(node => node.Attributes["class"]?.Value == "entry unvoted")
+                .Element("p")
+                .Element("a")
+                .InnerText;
+            
+            yield return title;
         }
     }
 
