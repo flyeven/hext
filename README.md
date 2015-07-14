@@ -42,7 +42,7 @@ Let's try scraping headlines from the front page of Reddit.
     {
         string html;
         using (var client = new WebClient())
-            client.DownloadString("http://reddit.com");
+            html = client.DownloadString("http://reddit.com");
     
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
@@ -51,9 +51,12 @@ Let's try scraping headlines from the front page of Reddit.
             .DocumentNode
             .Element("html")
             .Element("body")
-            .ChildNodes.First(node => node.Attributes["class"]?.Value == "content")
-            .ChildNodes.Last(node => node.Attributes["class"]?.Value == "spacer")
-            .ChildNodes.First(node => node.Id == "siteTable");
+            .ChildNodes
+            .First(node => node.Attributes["class"]?.Value == "content")
+            .ChildNodes
+            .Last(node => node.Attributes["class"]?.Value == "spacer")
+            .ChildNodes
+            .First(node => node.Id == "siteTable");
         
         var posts = table.ChildNodes.Where(child =>
         {
@@ -68,7 +71,8 @@ Let's try scraping headlines from the front page of Reddit.
         foreach (var post in posts)
         {
             string title = post
-                .ChildNodes.First(node => node.Attributes["class"]?.Value == "entry unvoted")
+                .ChildNodes
+                .First(node => node.Attributes["class"]?.Value == "entry unvoted")
                 .Element("p")
                 .Element("a")
                 .InnerText;
