@@ -8,78 +8,82 @@ Let's try scraping headlines from the front page of Reddit.
 
 ### With Hext
 
-    public IEnumerable<string> RedditHeadLines()
+```csharp
+public IEnumerable<string> RedditHeadLines()
+{
+    string html;
+    using (var client = new WebClient())
+        html = client.DownloadString("http://reddit.com");
+    
+    var doc = new HtmlDocument();
+    doc.LoadHtml(html);
+    
+    var table = doc.Body()
+        .ChildNodes.WithClass("content")
+        .ChildNodes.Last(node => node.Class() == "spacer")
+        .ChildNodes.WithId("siteTable");
+    
+    var posts = table.SortChildren(child => child.Class().Contains("thing"));
+    
+    foreach (var post in posts)
     {
-        string html;
-        using (var client = new WebClient())
-            html = client.DownloadString("http://reddit.com");
+        string title = post
+            .ChildNodes.WithClass("entry unvoted")
+            .Element("p")
+            .Element("a")
+            .InnerText;
         
-        var doc = new HtmlDocument();
-        doc.LoadHtml(html);
-        
-        var table = doc.Body()
-            .ChildNodes.WithClass("content")
-            .ChildNodes.Last(node => node.Class() == "spacer")
-            .ChildNodes.WithId("siteTable");
-        
-        var posts = table.SortChildren(child => child.Class().Contains("thing"));
-        
-        foreach (var post in posts)
-        {
-            string title = post
-                .ChildNodes.WithClass("entry unvoted")
-                .Element("p")
-                .Element("a")
-                .InnerText;
-            
-            yield return title;
-        }
+        yield return title;
     }
+}
+```
 
 ### Without Hext
 
-    public IEnumerable<string> RedditHeadLines()
-    {
-        string html;
-        using (var client = new WebClient())
-            html = client.DownloadString("http://reddit.com");
+```csharp
+public IEnumerable<string> RedditHeadLines()
+{
+    string html;
+    using (var client = new WebClient())
+        html = client.DownloadString("http://reddit.com");
+
+    var doc = new HtmlDocument();
+    doc.LoadHtml(html);
     
-        var doc = new HtmlDocument();
-        doc.LoadHtml(html);
+    var table = doc
+        .DocumentNode
+        .Element("html")
+        .Element("body")
+        .ChildNodes
+        .First(node => node.Attributes["class"]?.Value == "content")
+        .ChildNodes
+        .Last(node => node.Attributes["class"]?.Value == "spacer")
+        .ChildNodes
+        .First(node => node.Id == "siteTable");
+    
+    var posts = table.ChildNodes.Where(child =>
+    {
+        string @class = child.Attributes["class"]?.Value;
         
-        var table = doc
-            .DocumentNode
-            .Element("html")
-            .Element("body")
-            .ChildNodes
-            .First(node => node.Attributes["class"]?.Value == "content")
-            .ChildNodes
-            .Last(node => node.Attributes["class"]?.Value == "spacer")
-            .ChildNodes
-            .First(node => node.Id == "siteTable");
+        if (@class == null)
+            return false;
         
-        var posts = table.ChildNodes.Where(child =>
-        {
-            string @class = child.Attributes["class"]?.Value;
-            
-            if (@class == null)
-                return false;
-            
-            return @class.Contains("thing");
-        });
+        return @class.Contains("thing");
+    });
+    
+    foreach (var post in posts)
+    {
+        string title = post
+            .ChildNodes
+            .First(node => node.Attributes["class"]?.Value == "entry unvoted")
+            .Element("p")
+            .Element("a")
+            .InnerText;
         
-        foreach (var post in posts)
-        {
-            string title = post
-                .ChildNodes
-                .First(node => node.Attributes["class"]?.Value == "entry unvoted")
-                .Element("p")
-                .Element("a")
-                .InnerText;
-            
-            yield return title;
-        }
+        yield return title;
     }
+}
+```
 
 If you were able to read and understand that last snippet without your eyes glazing over, then I *sincerely* congratulate you.
 
