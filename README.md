@@ -5,7 +5,7 @@ Hext allows you to quickly find the value of common attributes, jump straight to
 
 ## On NuGet
 
-Hext is available as a package on NuGet ([link](https://www.nuget.org/packages/Hext.dll/)). To install it, you can run the following command in the Package Manager Console:
+Hext is available as a [package](https://www.nuget.org/packages/Hext.dll/) on NuGet. To install it, you can run the following command in the Package Manager Console:
 
     Install-Package Hext.dll
 
