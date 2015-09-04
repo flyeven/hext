@@ -91,8 +91,6 @@ public IEnumerable<string> RedditHeadLines()
 }
 ```
 
-If you were able to read and understand that last snippet without your eyes glazing over, then I *sincerely* congratulate you.
-
 ## Get started
 
 Hext comprises 3 main classes: `Docext`, `Nodext`, and `Linqext`. The first two are in namespace `Hext`, but to use the LINQ extensions you must add a `using` directive for `Hext.Linq`. There is no need to call the methods directly- if your IDE is set up correctly then you should see the extension methods when you type a `.` after the name of your `HtmlNode`.
